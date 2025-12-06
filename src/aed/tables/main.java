@@ -17,10 +17,10 @@ public class main {
 
     public static void main(String[] args){
 
-        Function<Integer, Integer> f = x -> x;
+        Function<String, Integer> f = x -> x.hashCode();
 
-        UAlshTable<Integer, Integer> Table = new UAlshTable<>(f);
-
+        UAlshTable<String , Integer> Table = new UAlshTable<>(f);
+/*
         Table.put(242165, 523);
         Table.put(2*242165, 30243);
         Table.put(3*242165, 40423);
@@ -29,12 +29,22 @@ public class main {
         Table.put(6*242165, 73224);
         Table.put(259, 744);
 
-        System.out.println(Arrays.toString(Table.getSubTable(1)));
+
+ */
+
+        String[] teste = {"kfM1Scs", "xe7LvVc", "BjeWFZ5", "AaBBBBBB",
+        "0ZGfmKF", "R8yil9o", "AaBBAaAa", "zdTd2eU", "8iEI26c", "kGmAcga", "OGYBx0F", "AaAaBBAa", "BBAaAaAa", "IOC0A9l", "a2cBREr", "AaBBAaBB", "BaVDIcP", "72BsWLF",
+        "AaBBBBAa", "B5NBtXK", "hC8xsJj", "AaAaBBBB","HAv2ien", "BBAaAaBB","yAhaBlD",
+        "wlHaB8g","llLymNY","sx0cvvi","p5tvusa","t00w3EP","0hJp3yu","5vqgTcX","AaAaAaAa","AaAaAaBB","srg30vn"};
 
 
-        for (IUAlshBucket<Integer, Integer> i : Table.getSubTable(1)){
-            if(i == null) continue;
-            System.out.println(i.getKey());
+        for (String s : teste){
+            Table.put(s, 100101);
+        }
+
+
+        for (String i : Table.keys()){
+            System.out.println(i);
         }
 
 

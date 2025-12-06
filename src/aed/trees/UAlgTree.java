@@ -106,33 +106,6 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
         return node.size;
     }
 
-    public void bfs(){
-
-        Queue<UAlgTreeNode<Key, Value>> queue = new LinkedList<>();
-        if(this.root == null) return;
-
-        queue.add(this.root);
-
-        while (!queue.isEmpty()){
-            UAlgTreeNode<Key, Value> node = queue.poll();
-
-            System.out.print(node.key);
-
-            if(node.left != null){
-                queue.add(node.left);
-            }
-
-            if (node.right != null){
-                queue.add(node.right);
-            }
-
-                System.out.println("");
-
-        }
-
-
-        return;
-    }
 
     // https://www.geeksforgeeks.org/dsa/inorder-traversal-of-binary-tree/
     // https://www.geeksforgeeks.org/dsa/inorder-traversal-of-binary-tree/
@@ -450,6 +423,64 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
         return false;
     }
 
+    // TODO: Métodos para testes -----------------------------------------------------------
+
+    public void bfs(){
+
+        Queue<UAlgTreeNode<Key, Value>> queue = new LinkedList<>();
+        if(this.root == null) return;
+
+        queue.add(this.root);
+
+        while (!queue.isEmpty()){
+            UAlgTreeNode<Key, Value> node = queue.poll();
+            System.out.print(node.key);
+            if(node.left != null) queue.add(node.left);
+            if (node.right != null) queue.add(node.right);
+            System.out.println("");
+        }
+    }
+
+
+
+    public int bfsMin (){
+        if (this.root == null) return 0;
+
+        int ans = 1;
+
+        Queue<UAlgTreeNode<Key, Value>> queue = new LinkedList<>();
+        queue.add(this.root);
+
+        while (!queue.isEmpty()){
+            int s = queue.size();
+
+            for (int i = 0; i < s; i++){
+                UAlgTreeNode<Key, Value> node = queue.poll();
+                if (node.left == null && node.right == null) return ans;
+                if(node.left != null) queue.add(node.left);
+                if (node.right != null) queue.add(node.right);
+            }
+
+            ans++;
+        }
+
+        return 0;
+    }
+
+    public int dfsMax(){
+        return dfsMax(this.root);
+    }
+
+    public int dfsMax(UAlgTreeNode<Key, Value> node){
+        if (node == null) return 0;
+
+        return Math.max(dfsMax(node.right), dfsMax(node.left)) + 1;
+    }
+
+
+    public float racio(int min, int max){
+        return (float) min /max;
+    }
 
 
 }

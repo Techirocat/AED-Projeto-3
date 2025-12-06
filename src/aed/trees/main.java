@@ -1,32 +1,103 @@
 package aed.trees;
 
+import aed.utils.TemporalAnalysisUtils;
+
+import java.util.function.Consumer;
+import java.util.function.Function;
+
 public class main {
-
     public static void main(String[] args){
-        UAlgTree<Integer, Integer> tree = new UAlgTree<>();
-        int[] chaves = {15, 3, 22, 8, 29, 11, 19, 5, 26, 1};
 
-        for(int k : chaves){
-            tree.put(k, k);
+        int min = 0;
+        int max = 0;
+        float r = 0;
+
+
+        System.out.println("\n------------Teste Com Random Keys--------------\n");
+        for (int i = 1; i < 11; i++) {
+            UAlgTree<Integer, Integer> treeRandomKeys = new UAlgTree<>();
+            for (int j = 0; j < 200000; j++) {
+                int ran = (int) (Math.random() * 10000000);
+                treeRandomKeys.put(ran, ran);
+            }
+
+            min = treeRandomKeys.bfsMin();
+            max = treeRandomKeys.dfsMax();
+            r = treeRandomKeys.racio(min, max);
+
+            System.out.println(i + " -> " + "min: " + min + " max: " + max + " racio: " + r);
         }
 
-        for (int i : tree.values()){
-            System.out.println("V-" + i);
+        System.out.println();
+
+        System.out.println("\n-----------Teste Com Keys Crescente------------\n");
+        for (int i = 1; i < 11; i++) {
+            UAlgTree<Integer, Integer> treeRandomKeys = new UAlgTree<>();
+            for (int j = 0; j < 200000; j++) {
+                treeRandomKeys.put(j, j);
+            }
+            min = treeRandomKeys.bfsMin();
+            max = treeRandomKeys.dfsMax();
+            r = treeRandomKeys.racio(min, max);
+
+            System.out.println(i + " -> " + "min: " + min + " max: " + max + " racio: " + r);
         }
 
-        tree.put(1, 10);
-        tree.put(29, null);
+        System.out.println("\n-----------Teste Com Keys Decrescente------------\n");
+        for (int i = 1; i < 11; i++) {
+            UAlgTree<Integer, Integer> treeRandomKeys = new UAlgTree<>();
+            for (int j = 200000; j > 0; j--) {
+                treeRandomKeys.put(j, j);
+            }
+            min = treeRandomKeys.bfsMin();
+            max = treeRandomKeys.dfsMax();
+            r = treeRandomKeys.racio(min, max);
 
-        System.out.println("");
-
-
-        for (int i : tree.values()){
-            System.out.println("V-" + i);
+            System.out.println(i + " -> " + "min: " + min + " max: " + max + " racio: " + r);
         }
 
 
-        //tree.bfs();
+        System.out.println("\n-----------Teste de razão Dobrada ------------\n");
+
+        Function<Integer, UAlgTree<Integer, Integer>> FRD = (n) -> {
+            UAlgTree<Integer, Integer> treeRD = new UAlgTree<>();
+            for (int i = 0; i < n; i++){
+                treeRD.put(i, i);
+            }
+
+            return treeRD;
+        };
+
+        Consumer<UAlgTree<Integer, Integer>> CRD = (t) ->{
+
+            int n = t.size();
+            for (int i = 0; i < n; i++){
+                t.get((int) (Math.random()*n));
+            }
+        };
+
+        TemporalAnalysisUtils.runDoublingRatioTest(FRD, CRD, 15);
+
+
+
+        System.out.println("\n-----------Teste de razão Dobrada 80/20 ------------\n");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
-
-// conserthehddemessage!
