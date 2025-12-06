@@ -1,5 +1,9 @@
 package aed.tables;
 
+import com.sun.jdi.Value;
+
+import java.security.Key;
+import java.util.Arrays;
 import java.util.function.Function;
 
 public class main {
@@ -17,25 +21,25 @@ public class main {
 
         UAlshTable<Integer, Integer> Table = new UAlshTable<>(f);
 
-        Table.put(0, 523);
-        Table.put(37, 30243);
-        Table.put(74, 40423);
-        Table.put(148, 50243);
-        Table.put(111, 604234);
-        Table.put(222, 73224);
+        Table.put(242165, 523);
+        Table.put(2*242165, 30243);
+        Table.put(3*242165, 40423);
+        Table.put(4*242165, 50243);
+        Table.put(5*242165, 604234);
+        Table.put(6*242165, 73224);
         Table.put(259, 744);
 
-
-        System.out.println(Table.get(0));
-        System.out.println(Table.get(37));
-        System.out.println(Table.get(74));
-        System.out.println(Table.get(148));
-        System.out.println(Table.get(111));
-        System.out.println(Table.get(222));
-        System.out.println(Table.get(259));
+        System.out.println(Arrays.toString(Table.getSubTable(1)));
 
 
+        for (IUAlshBucket<Integer, Integer> i : Table.getSubTable(1)){
+            if(i == null) continue;
+            System.out.println(i.getKey());
+        }
 
+
+
+        /*
 
         System.out.println("Size: ");
         System.out.println(Table.size());
@@ -44,6 +48,8 @@ public class main {
         System.out.println("LoadFactory: ");
         System.out.println(Table.getLoadFactor());
 
+
+         */
 
 
 

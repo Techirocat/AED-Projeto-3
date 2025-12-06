@@ -17,7 +17,7 @@ getSubTable - FEITO
 containsKey - FEITO
 get - FEITO
 put - FEITO
-fastput - TESTANDO
+fastPut - TESTANDO
 delete - FEITO
 
 
@@ -25,8 +25,8 @@ delete - FEITO
  */
 
 class UAlshBucket<Key,Value> implements IUAlshBucket<Key,Value> {
-    //devem guardar no balde tudo o que for necessário para implementar
-    //as funções públicas da interface. Mas podem também adicionar outros
+    //Devem guardar no balde tudo o que for necessário para implementar
+    //as funções públicas da "interface". Mas podem também adicionar outros
     //campos e métodos (incluindo o construtor), caso o entendam.
 
     private Key key;
@@ -101,10 +101,10 @@ public class UAlshTable<Key,Value> {
 
     private int indexPrimos;
     private int naoApagado;
-    private int sizeT[];
-    private int capacidadeT[];
+    private int[] sizeT;
+    private int[] capacidadeT;
 
-    private Function<Key, Integer> hashCode2;
+    private final Function<Key, Integer> hashCode2;
     private UAlshBucket<Key, Value>[] T1;
     private UAlshBucket<Key, Value>[] T2;
     private UAlshBucket<Key, Value>[] T3;
@@ -137,10 +137,20 @@ public class UAlshTable<Key,Value> {
         }
 
         this.T1 = new UAlshBucket[capacidadeT[1]];
+        preencerTabela(1, T1);
+
         this.T2 = new UAlshBucket[capacidadeT[2]];
+        preencerTabela(2, T2);
+
         this.T3 = new UAlshBucket[capacidadeT[3]];
+        preencerTabela(3, T3);
+
         this.T4 = new UAlshBucket[capacidadeT[4]];
+        preencerTabela(4, T4);
+
         this.T5 = new UAlshBucket[capacidadeT[5]];
+        preencerTabela(5, T5);
+
 
         this.sizeT = new int[6];
         for (int i = 0; i < 6; i++){
@@ -150,10 +160,16 @@ public class UAlshTable<Key,Value> {
 
     }
 
+    private void preencerTabela(int tabela, UAlshBucket<Key, Value>[] T){
+        for (int i = 0; i < capacidadeT[tabela]; i++){
+            T[i] = criarBalde(tabela, i, null, null);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     private void resize(int capacidade){
 
-        System.out.println("->  Resize  <-");
+        //System.out.println("->  Resize  <-");
 
         if (capacidadeT[1] < capacidade){ // TODO: Aumentar
             indexPrimos++;
@@ -176,10 +192,20 @@ public class UAlshTable<Key,Value> {
         }
 
         this.T1 = new UAlshBucket[capacidadeT[1]];
+        preencerTabela(1, T1);
+
         this.T2 = new UAlshBucket[capacidadeT[2]];
+        preencerTabela(2, T2);
+
         this.T3 = new UAlshBucket[capacidadeT[3]];
+        preencerTabela(3, T3);
+
         this.T4 = new UAlshBucket[capacidadeT[4]];
+        preencerTabela(4, T4);
+
         this.T5 = new UAlshBucket[capacidadeT[5]];
+        preencerTabela(5, T5);
+
 
 
         this.naoApagado = 0;
@@ -231,7 +257,7 @@ public class UAlshTable<Key,Value> {
     {
         int soma = 0;
         for (int i = 1; i < 6; i++){
-           soma = soma + capacidadeT[i];
+            soma = soma + capacidadeT[i];
 
         }
         return soma;
@@ -298,8 +324,8 @@ public class UAlshTable<Key,Value> {
 
 
         for (int i = z; i > 0; i--){
-            if(baldes[i] == null || baldes[i].getKey() == null) continue;
-            if (baldes[i].getValue() == null) continue;
+            if(baldes[i] == null || baldes[i].isEmpty()) continue;
+            if (baldes[i].isDeleted()) continue;
             if (baldes[i].getHc1() != hc1) continue;
             if (baldes[i].getHc2() != hc2) continue;
 
@@ -352,12 +378,12 @@ public class UAlshTable<Key,Value> {
 
         if(z > 0) { // TODO: AtualizarG
             for (int i = z; i > 0; i--){
-                if (baldes[i] == null || baldes[i].getKey() == null) continue;
+                if (baldes[i] == null || baldes[i].isEmpty()) continue;
                 if (baldes[i].getHc1() != hc1) continue;
                 if (baldes[i].getHc2() != hc2) continue;
 
                 if (baldes[i].getKey().equals(k)){
-                    if (baldes[i].getValue() == null){
+                    if (baldes[i].isDeleted()){
                         naoApagado--;
                         alterarSize(i, 1);
                     }
@@ -373,7 +399,7 @@ public class UAlshTable<Key,Value> {
 
         int j = 0;
         for (int i = 1; i < 6; i++){
-            if (baldes[i] == null || baldes[i].getKey() == null){
+            if (baldes[i] == null || baldes[i].isEmpty()){
                 j = i;
                 break;
             }
@@ -391,6 +417,7 @@ public class UAlshTable<Key,Value> {
 
 
 
+        //System.out.println("j " + j + "  index: " + indexs[j]);
         baldes[j].setValue(v);
         baldes[j].setKey(k);
         baldes[j].setHc1(hc1);
@@ -450,7 +477,7 @@ public class UAlshTable<Key,Value> {
             if (baldes[i] == null){
                 j = i;
                 break;
-            }else if (baldes[i].getKey() == null){
+            }else if (baldes[i].isEmpty()){
                 j = i;
                 break;
             }
@@ -521,8 +548,8 @@ public class UAlshTable<Key,Value> {
 
         int j = 0;
         for (int i = z; i > 0; i--){
-            if (baldes[i] == null || baldes[i].getKey() == null) continue;
-            if (baldes[i].getValue() == null) continue;
+            if (baldes[i] == null || baldes[i].isEmpty()) continue;
+            if (baldes[i].isDeleted()) continue;
             if (baldes[i].getHc1() != hc1) continue;
             if (baldes[i].getHc2() != hc2) continue;
 
@@ -549,7 +576,7 @@ public class UAlshTable<Key,Value> {
             for (int j = 0; j < tablecapacidade(i); j++){
                 UAlshBucket<Key, Value> balde = indexBalde(i, j);
                 if(balde == null) continue;
-                if (balde.getValue() == null) continue;
+                if (balde.isDeleted()) continue;
 
                 arr.add(balde.getKey());
             }
@@ -596,7 +623,3 @@ public class UAlshTable<Key,Value> {
         sizeT[tabela] = sizeT[tabela] + x;
     }
 }
-
-
-
-
