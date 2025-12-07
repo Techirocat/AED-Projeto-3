@@ -111,22 +111,5 @@ public class main {
 
         TemporalAnalysisUtils.runDoublingRatioTest(FPareto, CPareto, 17);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 }

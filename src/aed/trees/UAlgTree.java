@@ -81,33 +81,26 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
     private boolean rodou;
     private Value value;
 
-    public UAlgTree()
-    {
+    public UAlgTree() {
         this.root = null;
         this.rodou = false;
     }
 
-    public IUAlgTreeNode<Key,Value> getRoot()
-    {
+    public IUAlgTreeNode<Key,Value> getRoot() {
         return this.root;
     }
 
-    public int size()
-    {
+    public int size() {
         if (this.root == null) return 0;
         return this.root.size;
     }
 
-    public int size(UAlgTreeNode<Key, Value> node){
-        if (node == null){
-            return 0;
-        }
-
+    private int size(UAlgTreeNode<Key, Value> node){
+        if (node == null) return 0;
         return node.size;
     }
 
 
-    // https://www.geeksforgeeks.org/dsa/inorder-traversal-of-binary-tree/
     // https://www.geeksforgeeks.org/dsa/inorder-traversal-of-binary-tree/
     public Iterable<Key> keys()
     {
@@ -119,10 +112,9 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
         return arr;
     }
 
-    public void ordenarKeys(ArrayList<Key> arr, UAlgTreeNode<Key, Value> node){
-        if (node == null){
-            return;
-        }
+    private void ordenarKeys(ArrayList<Key> arr, UAlgTreeNode<Key, Value> node){
+        if (node == null) return;
+
 
         ordenarKeys(arr, node.left);
         arr.add(node.getKey());
@@ -130,18 +122,15 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
     }
 
     // https://www.geeksforgeeks.org/dsa/inorder-traversal-of-binary-tree/
-    public Iterable<Value> values()
-    {
+    public Iterable<Value> values() {
         if (this.root == null) return null;
         ArrayList<Value> arr = new ArrayList<>();
         KeysValue(arr, this.root);
         return arr;
     }
 
-    public void KeysValue(ArrayList<Value> arr, UAlgTreeNode<Key, Value> node){
-        if (node == null){
-            return;
-        }
+    private void KeysValue(ArrayList<Value> arr, UAlgTreeNode<Key, Value> node){
+        if (node == null) return;
 
         KeysValue(arr, node.left);
         arr.add(node.getValue());
@@ -149,11 +138,8 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
     }
 
 
-    public UAlgTree<Key,Value> shallowCopy()
-    {
-        if (this.root == null) {
-            return null;
-        }
+    public UAlgTree<Key,Value> shallowCopy() {
+        if (this.root == null) return null;
 
         UAlgTree<Key, Value> tree = new UAlgTree<>();
         tree.value = null;
@@ -164,10 +150,8 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
         return tree;
     }
 
-    public UAlgTreeNode<Key, Value> nodeCopy(UAlgTreeNode<Key, Value> node){
-        if (node == null) {
-            return null;
-        }
+    private UAlgTreeNode<Key, Value> nodeCopy(UAlgTreeNode<Key, Value> node){
+        if (node == null) return null;
 
         UAlgTreeNode<Key, Value> nodecopy = new UAlgTreeNode<>(node.key, node.value);
         nodecopy.size = node.size;
@@ -182,43 +166,45 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
 
     // TODO: Auto Balanceamento------------------------------------------------------------
 
-
-    public int W(UAlgTreeNode<Key, Value> node){
+    private int W(UAlgTreeNode<Key, Value> node){
         if (node == null) return 1;
         return node.weight;
     }
 
-    public void Pesos(UAlgTreeNode<Key, Value> node){
+    private void Pesos(UAlgTreeNode<Key, Value> node){
         if (node == null) return;
 
         node.weight = W(node.left) + W(node.right);
     }
 
-    public void Sizes(UAlgTreeNode<Key, Value> node){
+    private void Sizes(UAlgTreeNode<Key, Value> node){
         if (node == null) return;
 
         node.size = size(node.left) + size(node.right) + 1;
     }
 
-    public UAlgTreeNode<Key, Value> AutoBalanceamento(UAlgTreeNode<Key, Value> node){
+    private UAlgTreeNode<Key, Value> AutoBalanceamento(UAlgTreeNode<Key, Value> node){
         if (node == null) return null;
 
-        // Esquerta < 0.4 * Direita
-        if (W(node.left) < 0.4 * W(node.right)){
-            // Esquerda > 1.5 * direita
-            if (W(node.right.left) > 1.5 * W(node.right.right)){
+        if (W(node.left) < 0.4 * W(node.right)){ // Esquerta < 0.4 * Direita
+
+            if (W(node.right.left) > 1.5 * W(node.right.right)){ // Esquerda > 1.5 * direita
+
                 node.right = rotateRight(node.right);
                 node = rotateLeft(node);
+
             } else{
                 node = rotateLeft(node);
             }
 
         }else if(W(node.right) < 0.4 * W(node.left)){
 
-            // Direita > 1.5 * Esquerda
-            if (W(node.left.right) > 1.5 * W(node.left.left)){
+            if (W(node.left.right) > 1.5 * W(node.left.left)){ // Direita > 1.5 * Esquerda
+
+
                 node.left = rotateLeft(node.left);
                 node = rotateRight(node);
+
             } else{
                 node = rotateRight(node);
             }
@@ -229,7 +215,7 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
 
     // TODO: Inserção ------------------------------------------------------------
 
-    public UAlgTreeNode<Key, Value> rotateLeft(UAlgTreeNode<Key, Value> leftNode){
+    private UAlgTreeNode<Key, Value> rotateLeft(UAlgTreeNode<Key, Value> leftNode){
         UAlgTreeNode<Key, Value> rightNode = leftNode.right;
         leftNode.right = rightNode.left;
         rightNode.left = leftNode;
@@ -241,7 +227,7 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
         return rightNode;
     }
 
-    public UAlgTreeNode<Key, Value> rotateRight(UAlgTreeNode<Key, Value> rightNode){
+    private UAlgTreeNode<Key, Value> rotateRight(UAlgTreeNode<Key, Value> rightNode){
         UAlgTreeNode<Key, Value> leftNode = rightNode.left;
         rightNode.left = leftNode.right;
         leftNode.right = rightNode;
@@ -263,7 +249,7 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
         this.root = put(this.root, k, v);
     }
 
-    public UAlgTreeNode<Key, Value> put(UAlgTreeNode<Key, Value> node, Key k, Value v){
+    private UAlgTreeNode<Key, Value> put(UAlgTreeNode<Key, Value> node, Key k, Value v){
         if (node == null) return new UAlgTreeNode<>(k, v);
 
 
@@ -295,7 +281,7 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
         this.root = delete(this.root, k);
     }
 
-    public UAlgTreeNode<Key, Value> delete(UAlgTreeNode<Key, Value> node, Key k){
+    private UAlgTreeNode<Key, Value> delete(UAlgTreeNode<Key, Value> node, Key k){
         if (node == null) return null;
 
         int cmp = k.compareTo(node.key);
@@ -353,8 +339,7 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
         }
     }
 
-    public Value get(Key k)
-    {
+    public Value get(Key k) {
         if(this.root == null) return null;
 
         this.value = null;
@@ -365,35 +350,35 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
         return this.value;
     }
 
-    public UAlgTreeNode<Key, Value> get(Key k, UAlgTreeNode<Key, Value> node){
+    private UAlgTreeNode<Key, Value> get(Key k, UAlgTreeNode<Key, Value> node){
         if (node == null){
             return null;
         }
 
-            int cmp = k.compareTo(node.key);
-            if (cmp == 0) {
-                this.value = node.value;
-                return node;
-            } else if (cmp < 0) {
-                node.left = get(k, node.left);
+        int cmp = k.compareTo(node.key);
+        if (cmp == 0) {
+            this.value = node.value;
+            return node;
+        } else if (cmp < 0) {
+            node.left = get(k, node.left);
 
-                if (this.value != null && !rodou){
-                    if (rotacaoDireitaSegura(node) || this.root == node){
-                        node = rotateRight(node); // o rotation cuida dos pesos e sizes
-                        this.rodou = true;
-                    }
-                }
-
-            } else {
-                node.right = get(k, node.right);
-
-                if(this.value != null && !rodou){
-                    if(rotacaoEsquerdaSegura(node) || this.root == node){
-                        node = rotateLeft(node); // o ratate cuida dos pessos e sizes
-                        this.rodou = true;
-                    }
+            if (this.value != null && !rodou){
+                if (rotacaoDireitaSegura(node) || this.root == node){
+                    node = rotateRight(node); // o rotation cuida dos pesos e sizes
+                    this.rodou = true;
                 }
             }
+
+        } else {
+            node.right = get(k, node.right);
+
+            if(this.value != null && !rodou){
+                if(rotacaoEsquerdaSegura(node) || this.root == node){
+                    node = rotateLeft(node); // o ratate cuida dos pessos e sizes
+                    this.rodou = true;
+                }
+            }
+        }
 
 
         return node;
@@ -404,23 +389,14 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
         return search(k, this.root) != null;
     }
 
-    public boolean rotacaoDireitaSegura(UAlgTreeNode<Key, Value> p){
+    private boolean rotacaoDireitaSegura(UAlgTreeNode<Key, Value> p){
         UAlgTreeNode<Key, Value> n = p.left;
-        if(W(p) <= 3.5 * W(n.right) && W(p) <= 3.5 * W(n.left) + W(n.right)){
-
-                return true;
-        }
-
-        return false;
+        return W(p) <= 3.5 * W(n.right) && W(p) <= 3.5 * W(n.left) + W(n.right);
     }
 
-    public boolean rotacaoEsquerdaSegura(UAlgTreeNode<Key, Value> p){
+    private boolean rotacaoEsquerdaSegura(UAlgTreeNode<Key, Value> p){
         UAlgTreeNode<Key, Value> n = p.right;
-        if(W(p) <= 3.5 * W(n.left) &&  W(p) <= 3.5 * W(n.right) + W(n.left)){
-            return true;
-        }
-
-        return false;
+        return W(p) <= 3.5 * W(n.left) && W(p) <= 3.5 * W(n.right) + W(n.left);
     }
 
     // TODO: Métodos para testes -----------------------------------------------------------
@@ -437,7 +413,7 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
             System.out.print(node.key);
             if(node.left != null) queue.add(node.left);
             if (node.right != null) queue.add(node.right);
-            System.out.println("");
+            System.out.println();
         }
     }
 
@@ -456,6 +432,8 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
 
             for (int i = 0; i < s; i++){
                 UAlgTreeNode<Key, Value> node = queue.poll();
+                if (node == null) continue;
+
                 if (node.left == null && node.right == null) return ans;
                 if(node.left != null) queue.add(node.left);
                 if (node.right != null) queue.add(node.right);
@@ -471,7 +449,7 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
         return dfsMax(this.root);
     }
 
-    public int dfsMax(UAlgTreeNode<Key, Value> node){
+    private int dfsMax(UAlgTreeNode<Key, Value> node){
         if (node == null) return 0;
 
         return Math.max(dfsMax(node.right), dfsMax(node.left)) + 1;
@@ -481,7 +459,4 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
     public float racio(int min, int max){
         return (float) min /max;
     }
-
-
 }
-
