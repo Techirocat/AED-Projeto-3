@@ -1,12 +1,13 @@
 package aed.trees;
 
 import aed.utils.TemporalAnalysisUtils;
-
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class main {
     public static void main(String[] args){
+
+        // https://docs.vultr.com/java/standard-library/java/lang/Math/random
 
         int min = 0;
         int max = 0;
@@ -76,11 +77,39 @@ public class main {
             }
         };
 
-        TemporalAnalysisUtils.runDoublingRatioTest(FRD, CRD, 15);
+        TemporalAnalysisUtils.runDoublingRatioTest(FRD, CRD, 16);
 
 
 
-        System.out.println("\n-----------Teste de razão Dobrada 80/20 ------------\n");
+        System.out.println("\n-----------Teste de razão Dobrada 80/20 (Regra de Pareto) ------------\n");
+
+        Function<Integer, UAlgTree<Integer, Integer>> FPareto = (n) -> {
+            UAlgTree<Integer, Integer> treePareto = new UAlgTree<>();
+            for (int i = 0; i < n; i++){
+                treePareto.put(i, i);
+            }
+
+            return treePareto;
+        };
+
+        Consumer<UAlgTree<Integer, Integer>> CPareto = (t) ->{
+            int n = t.size();
+            int maisPesquisado =(int) (n * 0.20);
+
+
+            for (int i = 0; i < n; i++){
+                int o = (int) (Math.random() * n);
+
+                if (o > maisPesquisado){
+                    t.get((int) (Math.random()*maisPesquisado));
+                    continue;
+                }
+                int rangeRandom = maisPesquisado + (int)(Math.random() * ((n - maisPesquisado)));
+                t.get(rangeRandom);
+            }
+        };
+
+        TemporalAnalysisUtils.runDoublingRatioTest(FPareto, CPareto, 16);
 
 
 
