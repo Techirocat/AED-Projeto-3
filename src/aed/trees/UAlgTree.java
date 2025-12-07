@@ -457,6 +457,6 @@ public class UAlgTree<Key extends Comparable<Key>,Value> {
 
 
     public float racio(int min, int max){
-        return (float) min /max;
+        return (float) max / min;
     }
 }
