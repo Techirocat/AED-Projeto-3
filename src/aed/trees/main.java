@@ -77,7 +77,7 @@ public class main {
             }
         };
 
-        TemporalAnalysisUtils.runDoublingRatioTest(FRD, CRD, 16);
+        TemporalAnalysisUtils.runDoublingRatioTest(FRD, CRD, 17);
 
 
 
@@ -109,7 +109,7 @@ public class main {
             }
         };
 
-        TemporalAnalysisUtils.runDoublingRatioTest(FPareto, CPareto, 16);
+        TemporalAnalysisUtils.runDoublingRatioTest(FPareto, CPareto, 17);
 
 
 

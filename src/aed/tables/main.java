@@ -17,9 +17,9 @@ public class main {
 
     public static void main(String[] args){
 
-        Function<String, Integer> f = x -> x.hashCode();
+        Function<Integer, Integer> f = x -> x * (x-3);
 
-        UAlshTable<String , Integer> Table = new UAlshTable<>(f);
+        UAlshTable<Integer , Integer> Table = new UAlshTable<>(f);
 /*
         Table.put(242165, 523);
         Table.put(2*242165, 30243);
@@ -38,15 +38,13 @@ public class main {
         "wlHaB8g","llLymNY","sx0cvvi","p5tvusa","t00w3EP","0hJp3yu","5vqgTcX","AaAaAaAa","AaAaAaBB","srg30vn"};
 
 
-        for (String s : teste){
-            Table.put(s, 100101);
+        for (int i = 0; i < 50; i++){
+            Table.put((int) (Math.random() * 100000), 100101);
         }
 
-
-        for (String i : Table.keys()){
+        for (int i : Table.keys()){
             System.out.println(i);
         }
-
 
 
         /*

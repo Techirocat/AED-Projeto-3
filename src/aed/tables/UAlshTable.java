@@ -623,3 +623,7 @@ public class UAlshTable<Key,Value> {
         sizeT[tabela] = sizeT[tabela] + x;
     }
 }
+
+
+
+
