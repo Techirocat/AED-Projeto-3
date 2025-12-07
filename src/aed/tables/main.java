@@ -1,66 +1,105 @@
 package aed.tables;
 
-import com.sun.jdi.Value;
-
-import java.security.Key;
-import java.util.Arrays;
 import java.util.function.Function;
 
 public class main {
 
-    /*
-    Chaves com colisão
-
-    37, 74, 111, 148, 185, 222, 259, 296, 333, 370
-     */
-
 
     public static void main(String[] args){
 
-        Function<Integer, Integer> f = x -> x * (x-3);
+        //Ideia retirada daqui -> https://labex.io/tutorials/java-how-to-generate-hash-codes-for-integers-in-java-414034
+        Function<Integer, Integer> f = x -> (31 * x) ^ (x >>> 16);
+        Function<Integer, Integer> ff = x -> x * x;
 
-        UAlshTable<Integer , Integer> Table = new UAlshTable<>(f);
-/*
-        Table.put(242165, 523);
-        Table.put(2*242165, 30243);
-        Table.put(3*242165, 40423);
-        Table.put(4*242165, 50243);
-        Table.put(5*242165, 604234);
-        Table.put(6*242165, 73224);
-        Table.put(259, 744);
+        int n = 200000;
 
+        System.out.println("\n------------ Teste de Inserção - Valores Random  ----------------\n");
 
- */
+        for (int i = 1; i < 11; i++){
+            UAlshTable<Integer , Integer> table = new UAlshTable<>(f);
+            for (int j = 0; j < n; j++){
+                table.put((int) (Math.random() * 1000000000), j);
+            }
 
-        String[] teste = {"kfM1Scs", "xe7LvVc", "BjeWFZ5", "AaBBBBBB",
-        "0ZGfmKF", "R8yil9o", "AaBBAaAa", "zdTd2eU", "8iEI26c", "kGmAcga", "OGYBx0F", "AaAaBBAa", "BBAaAaAa", "IOC0A9l", "a2cBREr", "AaBBAaBB", "BaVDIcP", "72BsWLF",
-        "AaBBBBAa", "B5NBtXK", "hC8xsJj", "AaAaBBBB","HAv2ien", "BBAaAaBB","yAhaBlD",
-        "wlHaB8g","llLymNY","sx0cvvi","p5tvusa","t00w3EP","0hJp3yu","5vqgTcX","AaAaAaAa","AaAaAaBB","srg30vn"};
-
-
-        for (int i = 0; i < 50; i++){
-            Table.put((int) (Math.random() * 100000), 100101);
+            int c = table.getComparacoes();
+            System.out.println("i = " + i + " -- número de comparações: " + c + " -- média: " + (float)c/n);
         }
 
-        for (int i : Table.keys()){
-            System.out.println(i);
+        System.out.println("\n------------ Teste de Inserção - Valores crescentes  ----------------\n");
+
+        for (int i = 1; i < 11; i++){
+            UAlshTable<Integer , Integer> table = new UAlshTable<>(f);
+            for (int j = 0; j < n; j++){
+                table.put(j, j);
+            }
+
+            int c = table.getComparacoes();
+            System.out.println("i = " + i + " -- número de comparações: " + c + " -- média: " + (float)c/n);
+        }
+
+        System.out.println("\n------------ Teste de Inserção - Aumentando o número de elementos (n) ----------------\n");
+
+        for (int i = 1; i < 11; i++){
+            UAlshTable<Integer , Integer> table = new UAlshTable<>(f);
+            for (int j = 0; j < n * i; j++){
+                table.put((int) (Math.random() * 1000000000), j);
+            }
+
+            int c = table.getComparacoes();
+            System.out.println("n = " + i * n + " -- número de comparações: " + c + " -- média: " + (float)c/(n*i));
+        }
+
+        System.out.println("\n------------ Teste de Pesquisa Existente ----------------\n");
+
+        for (int i = 1; i < 11; i++){
+            UAlshTable<Integer , Integer> table = new UAlshTable<>(f);
+            for (int j = 0; j < n; j++){
+                table.put(j, j);
+            }
+            table.resetComparacoes();
+
+            for (int j = 0; j < n; j++){
+                table.get((int) (Math.random() * n));
+            }
+
+            int c = table.getComparacoes();
+            System.out.println("i = " + i + " -- número de comparações: " + c + " -- média: " + (float)c/n);
+        }
+
+        System.out.println("\n------------ Teste de Pesquisa Existente - Aumentando o numero de pesquisas (n) ----------------\n");
+
+        for (int i = 1; i < 11; i++){
+            UAlshTable<Integer , Integer> table = new UAlshTable<>(f);
+            for (int j = 0; j < n; j++){
+                table.put(j, j);
+            }
+            table.resetComparacoes();
+
+            for (int j = 0; j < n * i; j++){
+                table.get((int) (Math.random() * n));
+            }
+
+            int c = table.getComparacoes();
+            System.out.println("n = " + n * i + " -- número de comparações: " + c + " -- média: " + (float)c/(n*i));
         }
 
 
-        /*
+        System.out.println("\n------------ Teste de Pesquisa Inexistente ----------------\n");
 
-        System.out.println("Size: ");
-        System.out.println(Table.size());
-        System.out.println("Deletados: ");
-        System.out.println(Table.getDeletedNotRemoved());
-        System.out.println("LoadFactory: ");
-        System.out.println(Table.getLoadFactor());
+        for (int i = 1; i < 11; i++){
+            UAlshTable<Integer , Integer> table = new UAlshTable<>(f);
+            for (int j = 0; j < n; j++){
+                table.put(j, j);
+            }
+            table.resetComparacoes();
 
+            for (int j = 0; j < n; j++){
+                int rangeRandom = n + (int)(Math.random() * ((100000000 - n)));
+                table.get(rangeRandom);
+            }
 
-         */
-
-
-
-
+            int c = table.getComparacoes();
+            System.out.println("i = " + i + " -- número de comparações: " + c + " -- média: " + (float)c/n);
+        }
     }
 }

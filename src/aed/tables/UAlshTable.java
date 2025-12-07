@@ -74,6 +74,10 @@ class UAlshBucket<Key,Value> implements IUAlshBucket<Key,Value> {
 
 public class UAlshTable<Key,Value> {
 
+    private int comparacoes;
+    private int pesquisas;
+    private int puts;
+
     private int indexPrimos;
     private int naoApagado;
     private int[] sizeT;
@@ -91,6 +95,10 @@ public class UAlshTable<Key,Value> {
 
     @SuppressWarnings("unchecked")
     public UAlshTable(Function<Key,Integer> hc2) {
+        this.comparacoes = 0; // Usado apenas para testes
+        this.pesquisas = 0; // Usado apenas para testes
+        this.puts = 0; // usado apenas para testes
+
         this.naoApagado = 0;
         this.indexPrimos = 4;
         this.hashCode2 = hc2;
@@ -242,6 +250,9 @@ public class UAlshTable<Key,Value> {
 
     @SuppressWarnings("unchecked")
     public Value get(Key k) {
+
+        this.pesquisas++;
+
         int hc1 = k.hashCode();
         int hc2 = hashCode2.apply(k);
 
@@ -257,6 +268,8 @@ public class UAlshTable<Key,Value> {
         for (int i = z; i > 0; i--){
             if(baldes[i].isEmpty() || baldes[i].isDeleted() || baldes[i].getHc1() != hc1 || baldes[i].getHc2() != hc2) continue;
 
+            this.comparacoes++;
+
             if (baldes[i].getKey().equals(k)){
                 return baldes[i].getValue();
             }
@@ -268,6 +281,9 @@ public class UAlshTable<Key,Value> {
 
     @SuppressWarnings("unchecked")
     public void put(Key k, Value v) {
+
+        this.puts++;
+
         if (v == null){
             delete(k);
             return;
@@ -291,6 +307,8 @@ public class UAlshTable<Key,Value> {
         if(z > 0) {
             for (int i = z; i > 0; i--){
                 if (baldes[i].isEmpty() || baldes[i].getHc1() != hc1 || baldes[i].getHc2() != hc2) continue;
+
+                this.comparacoes++;
 
                 if (baldes[i].getKey().equals(k)){
                     if (baldes[i].isDeleted()){
@@ -399,6 +417,8 @@ public class UAlshTable<Key,Value> {
             if (baldes[i].isEmpty() || baldes[i].isDeleted()) continue;
             if (baldes[i].getHc1() != hc1 || baldes[i].getHc2() != hc2) continue;
 
+            this.comparacoes++;
+
             if (baldes[i].getKey().equals(k)){
                 j = i;
                 break;
@@ -467,4 +487,31 @@ public class UAlshTable<Key,Value> {
             baldes[i] = indexBalde(i, indexes[i]);
         }
     }
+
+    // TODO: -------------------------------- Métodos para Testes
+
+    public int getComparacoes(){
+        return this.comparacoes;
+    }
+
+    public void resetComparacoes(){
+        this.comparacoes = 0;
+    }
+
+    public int getPesquisas(){
+        return this.pesquisas;
+    }
+
+    public void resetPesquisas(){
+        this.pesquisas = 0;
+    }
+
+    public int getPuts(){
+        return this.puts;
+    }
+
+    public void resetPuts(){
+        this.puts = 0;
+    }
+
 }

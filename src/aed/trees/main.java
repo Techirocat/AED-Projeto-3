@@ -8,6 +8,7 @@ public class main {
     public static void main(String[] args){
 
         // https://docs.vultr.com/java/standard-library/java/lang/Math/random
+        // https://www.geeksforgeeks.org/java/java-math-random-method-examples/
 
         int min = 0;
         int max = 0;
