@@ -13,21 +13,41 @@ public class main {
         int min = 0;
         int max = 0;
         float r = 0;
+        int nn = 200000;
 
 
         System.out.println("\n------------Teste Com Random Keys--------------\n");
         for (int i = 1; i < 11; i++) {
             UAlgTree<Integer, Integer> treeRandomKeys = new UAlgTree<>();
-            for (int j = 0; j < 200000; j++) {
+            while(treeRandomKeys.size() < nn){
                 int ran = (int) (Math.random() * 10000000);
                 treeRandomKeys.put(ran, ran);
             }
+
 
             min = treeRandomKeys.bfsMin();
             max = treeRandomKeys.dfsMax();
             r = treeRandomKeys.racio(min, max);
 
             System.out.println(i + " -> " + "min: " + min + " max: " + max + " racio: " + r);
+        }
+
+        System.out.println();
+
+        System.out.println("\n------------Teste Com Random Keys - Aumentando o numero de elementos inseridos --------------\n");
+        for (int i = 1; i < 11; i++) {
+            UAlgTree<Integer, Integer> treeRandomKeys = new UAlgTree<>();
+            while(treeRandomKeys.size() < nn * i){
+                int ran = (int) (Math.random() * 10000000);
+                treeRandomKeys.put(ran, ran);
+            }
+
+
+            min = treeRandomKeys.bfsMin();
+            max = treeRandomKeys.dfsMax();
+            r = treeRandomKeys.racio(min, max);
+
+            System.out.println(i * nn+ " -> " + "min: " + min + " max: " + max + " racio: " + r);
         }
 
         System.out.println();
@@ -45,6 +65,19 @@ public class main {
             System.out.println(i + " -> " + "min: " + min + " max: " + max + " racio: " + r);
         }
 
+        System.out.println("\n-----------Teste Com Keys Crescente - Aumentando o numero de elementos inseridos ------------\n");
+        for (int i = 1; i < 11; i++) {
+            UAlgTree<Integer, Integer> treeRandomKeys = new UAlgTree<>();
+            for (int j = 0; j < nn * i; j++) {
+                treeRandomKeys.put(j, j);
+            }
+            min = treeRandomKeys.bfsMin();
+            max = treeRandomKeys.dfsMax();
+            r = treeRandomKeys.racio(min, max);
+
+            System.out.println(i * nn + " -> " + "min: " + min + " max: " + max + " racio: " + r);
+        }
+
         System.out.println("\n-----------Teste Com Keys Decrescente------------\n");
         for (int i = 1; i < 11; i++) {
             UAlgTree<Integer, Integer> treeRandomKeys = new UAlgTree<>();
@@ -57,6 +90,20 @@ public class main {
 
             System.out.println(i + " -> " + "min: " + min + " max: " + max + " racio: " + r);
         }
+
+        System.out.println("\n-----------Teste Com Keys Decrescente - Aumentando o numero de elementos inseridos ------------\n");
+        for (int i = 1; i < 11; i++) {
+            UAlgTree<Integer, Integer> treeRandomKeys = new UAlgTree<>();
+            for (int j = nn * i; j > 0; j--) {
+                treeRandomKeys.put(j, j);
+            }
+            min = treeRandomKeys.bfsMin();
+            max = treeRandomKeys.dfsMax();
+            r = treeRandomKeys.racio(min, max);
+
+            System.out.println(nn * i + " -> " + "min: " + min + " max: " + max + " racio: " + r);
+        }
+
 
 
         System.out.println("\n-----------Teste de razão Dobrada ------------\n");
@@ -78,7 +125,7 @@ public class main {
             }
         };
 
-        TemporalAnalysisUtils.runDoublingRatioTest(FRD, CRD, 17);
+        //TemporalAnalysisUtils.runDoublingRatioTest(FRD, CRD, 17);
 
 
 
