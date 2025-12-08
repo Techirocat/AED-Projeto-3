@@ -77,6 +77,7 @@ public class UAlshTable<Key,Value> {
     private int comparacoes;
     private int pesquisas;
     private int puts;
+    private int atualizacoes;
 
     private int indexPrimos;
     private int naoApagado;
@@ -98,6 +99,8 @@ public class UAlshTable<Key,Value> {
         this.comparacoes = 0; // Usado apenas para testes
         this.pesquisas = 0; // Usado apenas para testes
         this.puts = 0; // usado apenas para testes
+        this.atualizacoes = 0;
+
 
         this.naoApagado = 0;
         this.indexPrimos = 4;
@@ -315,6 +318,9 @@ public class UAlshTable<Key,Value> {
                         naoApagado--;
                         sizeT[i]++;
                     }
+
+                    atualizacoes++;
+
                     baldes[i].setValue(v);
                     return;
                 }
@@ -512,6 +518,10 @@ public class UAlshTable<Key,Value> {
 
     public void resetPuts(){
         this.puts = 0;
+    }
+
+    public int getAtualizacoes(){
+        return this.atualizacoes;
     }
 
 }

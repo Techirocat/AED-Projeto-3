@@ -4,6 +4,23 @@ import java.util.function.Function;
 
 public class main {
 
+    //Retirada daqui -> https://labex.io/tutorials/java-how-to-generate-hash-codes-for-integers-in-java-414034
+    public static Function<Integer, Integer> f = x -> (31 * x) ^ (x >>> 16);
+    public static Function<String, Integer> ff = x -> x.hashCode();
+
+
+    public static void main(String[] args){
+
+        insercaoStringRandoms();
+        insercaoValoresCrescentes();
+        insercaoAumentandoElementos();
+
+        pesquisaExistenteString();
+        pesquisaAumentandoElementos();
+        pesquisaInexistente();
+    }
+
+
     // https://www.geeksforgeeks.org/java/generate-random-string-of-given-size-in-java/
     public static String getAlphaNumericString(int n) {
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "0123456789" + "abcdefghijklmnopqrstuvxyz";
@@ -19,31 +36,25 @@ public class main {
         return sb.toString();
     }
 
-    public static void main(String[] args){
-
-        //Retirada daqui -> https://labex.io/tutorials/java-how-to-generate-hash-codes-for-integers-in-java-414034
-        Function<Integer, Integer> f = x -> (31 * x) ^ (x >>> 16);
-        Function<String, Integer> ff = x -> 0;
-        Function<String, Integer> fff = x -> x.hashCode();
-
-
-
-        int n = 200000;
-
+    public static void insercaoStringRandoms(){
         System.out.println("\n------------ Teste de Inserção - String Randoms  ----------------\n");
 
-        for (int i = 1; i < 11; i++){
+        for (int i = 1; i < 5; i++){
             UAlshTable<String, Integer> table = new UAlshTable<>(ff);
-            for (int j = 0; j < 1000000; j++){
-                table.put(getAlphaNumericString(10), j);
+            int j = 0;
+            while(table.size() < 1000000){
+                table.put(getAlphaNumericString(10), j++);
             }
 
             int c = table.getComparacoes();
-            System.out.println("i = " + i + " -- número de comparações: " + c + " -- média: " + (float)c/1000000);
+            System.out.println("i = " + i + " -- número de comparações: " + c + " -- média: " + (float)c/1000000 + " -- atualizações: " + table.getAtualizacoes());
         }
+    }
 
+    public static void insercaoValoresCrescentes(){
         System.out.println("\n------------ Teste de Inserção - Valores crescentes  ----------------\n");
 
+        int n = 200000;
         for (int i = 1; i < 11; i++){
             UAlshTable<Integer , Integer> table = new UAlshTable<>(f);
             for (int j = 0; j < n; j++){
@@ -53,9 +64,12 @@ public class main {
             int c = table.getComparacoes();
             System.out.println("i = " + i + " -- número de comparações: " + c + " -- média: " + (float)c/n);
         }
+    }
 
+    public static void insercaoAumentandoElementos(){
         System.out.println("\n------------ Teste de Inserção - Aumentando o número de elementos (n) ----------------\n");
 
+        int n = 2000000;
         for (int i = 1; i < 11; i++){
             UAlshTable<Integer , Integer> table = new UAlshTable<>(f);
             for (int j = 0; j < n * i; j++){
@@ -65,8 +79,10 @@ public class main {
             int c = table.getComparacoes();
             System.out.println("n = " + i * n + " -- número de comparações: " + c + " -- média: " + (float)c/(n*i));
         }
+    }
 
-        System.out.println("\n------------ Teste de Pesquisa Existente - Usando String e hc2 mau ----------------\n");
+    public static void pesquisaExistenteString(){
+        System.out.println("\n------------ Teste de Pesquisa Existente - Usando String ----------------\n");
 
         for (int i = 1; i < 11; i++){
             UAlshTable<String , Integer> table = new UAlshTable<>(ff);
@@ -85,8 +101,12 @@ public class main {
             int c = table.getComparacoes();
             System.out.println("i = " + i + " -- número de comparações: " + c + " -- média: " + (float)c/1000000);
         }
+    }
 
+    public static void pesquisaAumentandoElementos(){
         System.out.println("\n------------ Teste de Pesquisa Existente - Aumentando o numero de pesquisas (n) ----------------\n");
+
+        int n = 200000;
 
         for (int i = 1; i < 11; i++){
             UAlshTable<Integer , Integer> table = new UAlshTable<>(f);
@@ -102,24 +122,30 @@ public class main {
             int c = table.getComparacoes();
             System.out.println("n = " + n * i + " -- número de comparações: " + c + " -- média: " + (float)c/(n*i));
         }
+    }
 
-
+    public static void pesquisaInexistente(){
         System.out.println("\n------------ Teste de Pesquisa Inexistente ----------------\n");
 
         for (int i = 1; i < 11; i++){
-            UAlshTable<Integer , Integer> table = new UAlshTable<>(f);
+            UAlshTable<String , Integer> table = new UAlshTable<>(ff);
+            int n = 1000000;
+
             for (int j = 0; j < n; j++){
-                table.put(j, j);
+                table.put("A" + getAlphaNumericString(9), j);
             }
+
             table.resetComparacoes();
 
             for (int j = 0; j < n; j++){
-                int rangeRandom = n + (int)(Math.random() * ((100000000 - n)));
-                table.get(rangeRandom);
+                table.get("B" + getAlphaNumericString(9));
             }
 
             int c = table.getComparacoes();
-            System.out.println("i = " + i + " -- número de comparações: " + c + " -- média: " + (float)c/n);
+
+        System.out.println("i = " + i + " -- número de comparações: " + c + " -- média: " + (float)c/1000000);
         }
     }
+
+
 }

@@ -10,6 +10,16 @@ public class main {
         // https://docs.vultr.com/java/standard-library/java/lang/Math/random
         // https://www.geeksforgeeks.org/java/java-math-random-method-examples/
 
+        testeComRandomKeys();
+        testeAumentandoComRandomKeys();
+        testesComKeysCrescente();
+        testesComKeysDecrescente();
+        razaoDobrada();
+        testePareto();
+
+    }
+
+    public static void testeComRandomKeys(){
         int min = 0;
         int max = 0;
         float r = 0;
@@ -31,8 +41,15 @@ public class main {
 
             System.out.println(i + " -> " + "min: " + min + " max: " + max + " racio: " + r);
         }
+    }
 
-        System.out.println();
+    public static void testeAumentandoComRandomKeys(){
+
+        int min = 0;
+        int max = 0;
+        float r = 0;
+        int nn = 200000;
+
 
         System.out.println("\n------------Teste Com Random Keys - Aumentando o numero de elementos inseridos --------------\n");
         for (int i = 1; i < 11; i++) {
@@ -49,8 +66,14 @@ public class main {
 
             System.out.println(i * nn+ " -> " + "min: " + min + " max: " + max + " racio: " + r);
         }
+    }
 
-        System.out.println();
+    public static void testesComKeysCrescente(){
+
+        int min = 0;
+        int max = 0;
+        float r = 0;
+        int nn = 200000;
 
         System.out.println("\n-----------Teste Com Keys Crescente------------\n");
         for (int i = 1; i < 11; i++) {
@@ -77,6 +100,15 @@ public class main {
 
             System.out.println(i * nn + " -> " + "min: " + min + " max: " + max + " racio: " + r);
         }
+    }
+
+    public static void testesComKeysDecrescente(){
+
+        int min = 0;
+        int max = 0;
+        float r = 0;
+        int nn = 200000;
+
 
         System.out.println("\n-----------Teste Com Keys Decrescente------------\n");
         for (int i = 1; i < 11; i++) {
@@ -104,8 +136,9 @@ public class main {
             System.out.println(nn * i + " -> " + "min: " + min + " max: " + max + " racio: " + r);
         }
 
+    }
 
-
+    public static void razaoDobrada(){
         System.out.println("\n-----------Teste de razão Dobrada ------------\n");
 
         Function<Integer, UAlgTree<Integer, Integer>> FRD = (n) -> {
@@ -125,10 +158,11 @@ public class main {
             }
         };
 
-        //TemporalAnalysisUtils.runDoublingRatioTest(FRD, CRD, 17);
+        TemporalAnalysisUtils.runDoublingRatioTest(FRD, CRD, 17);
 
+    }
 
-
+    public static void testePareto(){
         System.out.println("\n-----------Teste de razão Dobrada 80/20 (Regra de Pareto) ------------\n");
 
         Function<Integer, UAlgTree<Integer, Integer>> FPareto = (n) -> {
@@ -158,6 +192,5 @@ public class main {
         };
 
         TemporalAnalysisUtils.runDoublingRatioTest(FPareto, CPareto, 17);
-
     }
 }
